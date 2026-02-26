@@ -1,12 +1,96 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="script.js" defer></script>
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkers Online</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <input type="button" value="ok" onclick="f()">
+
+  <!-- LOBBY -->
+  <div id="lobby" class="screen active">
+    <div class="lobby-card">
+      <h1>♟ Checkers Online</h1>
+      <p class="subtitle">Challenge a friend to a game of checkers</p>
+
+      <div class="lobby-section">
+        <button id="createRoomBtn" class="btn btn-primary">Create Room</button>
+      </div>
+
+      <div class="divider">or</div>
+
+      <div class="lobby-section join-section">
+        <input id="roomInput" type="text" placeholder="Enter Room Code" maxlength="6" />
+        <button id="joinRoomBtn" class="btn btn-secondary">Join Room</button>
+      </div>
+
+      <div id="lobbyMessage" class="lobby-message"></div>
+    </div>
+  </div>
+
+  <!-- WAITING -->
+  <div id="waiting" class="screen">
+    <div class="lobby-card">
+      <h2>Waiting for opponent...</h2>
+      <div class="room-code-display">
+        Room Code: <span id="displayRoomId"></span>
+      </div>
+      <button id="copyCodeBtn" class="btn btn-secondary">Copy Code</button>
+      <div class="spinner"></div>
+    </div>
+  </div>
+
+  <!-- GAME -->
+  <div id="game" class="screen">
+    <div class="game-layout">
+      <div class="game-sidebar left-sidebar">
+        <div class="player-card" id="player2Card">
+          <div class="piece-preview opponent-piece"></div>
+          <span id="player2Label">Opponent</span>
+        </div>
+        <div id="capturedByP1" class="captured-area"></div>
+      </div>
+
+      <div class="game-center">
+        <div id="statusBar" class="status-bar">Connecting...</div>
+        <div class="board-wrapper">
+          <div id="board" class="board"></div>
+        </div>
+      </div>
+
+      <div class="game-sidebar right-sidebar">
+        <div class="player-card" id="player1Card">
+          <div class="piece-preview my-piece"></div>
+          <span id="player1Label">You</span>
+        </div>
+        <div id="capturedByP2" class="captured-area"></div>
+      </div>
+    </div>
+
+    <!-- Game Over Overlay -->
+    <div id="gameOverOverlay" class="overlay hidden">
+      <div class="overlay-card">
+        <h2 id="gameOverTitle"></h2>
+        <p id="gameOverSubtitle"></p>
+        <div class="rematch-info">
+          <div id="rematchProgress" class="rematch-progress">0 / 2 want a rematch</div>
+          <button id="rematchBtn" class="btn btn-primary">Rematch</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Opponent Disconnected Overlay -->
+    <div id="disconnectedOverlay" class="overlay hidden">
+      <div class="overlay-card">
+        <h2>Opponent Disconnected</h2>
+        <p>The game has ended.</p>
+        <button id="backToLobbyBtn" class="btn btn-primary">Back to Lobby</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="game.js"></script>
 </body>
 </html>
